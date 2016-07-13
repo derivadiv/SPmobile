@@ -10,4 +10,6 @@
     <content src="index.html" />
     <access origin="*" />
     <engine name="ios" spec="~4.1.1" />
+    <preference name="EnableViewportScale" value="true"/>
+    
 </widget>

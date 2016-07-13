@@ -45,7 +45,8 @@
 <!-- initializing FHIR, filling template -->
 <script type="text/javascript">
     var pid = sessionStorage.getItem("pid");
-    //testfhir(pid, langdict);
+    var smart = connectfhir(pid);
+    mainview(smart, langdict);
 </script>
 
 
