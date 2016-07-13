@@ -1,0 +1,38 @@
+<!-- Language switch button -->
+<div class="btn-group btn-group-sm" role="group" aria-label="langswitch">
+  <button type="button" id="b_esp" class="btn btn-primary navbar-btn " onclick="changelang('spanish');">Español</button>
+  <button type="button" id="b_eng" class="btn btn-default navbar-btn " onclick="changelang('english');">English</button>
+</div>
+
+<!-- head_pat = Right side of navbar, only viewable if patient is logged in -->
+<ul class="nav navbar-nav navbar-right" id="head_pat">
+	<!-- Site actions/pages, TODO -->
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-content="ld_nav"></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="#">Action</a></li>
+      </ul>
+    </li>
+    <!-- Logout -->
+    <li class="bg-danger"><a onclick="logout();" data-content="ld_logout"></a></li>
+</ul>
+
+<!-- script setting active language and head_pat visible iff logged in -->
+<script>
+$(document).ready(function(){
+    if (sessionStorage.getItem("lang")){
+      var lang = sessionStorage.getItem("lang");
+      if (lang=="spanish"){
+        $("#b_esp").addClass("active");
+      } else if (lang == "english"){
+        $("#b_eng").addClass("active");
+      }
+    }
+    if (sessionStorage.getItem("pid")){
+      $("#head_pat")[0].style.visibility = "visible";
+    }
+    else {
+      $("#head_pat")[0].style.visibility = "hidden";
+    }
+});
+</script>

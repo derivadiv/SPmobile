@@ -1,0 +1,51 @@
+<h3> <span data-content="ld_greet"></span> <span id="patient_name"></span></h3>
+
+<!-- Medication prescription panel -->
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"><a href="#meds" data-toggle="collapse" style="color:inherit" data-content="ld_meds"></a></h3>
+  </div>
+  <div id="meds" class="collapse">
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead><tr> <th data-content="ld_sched"></th>  <th  class="text-center"><span class="flaticon flaticon-dawn"></span><br>  <span data-content="ld_break"></span></th>  <th class="text-center"><span class="flaticon flaticon-fruit"></span><br>  <span data-content="ld_lunch"> </span> </th>  <th class="text-center"><span class="flaticon flaticon-utensil"></span> <br> <span data-content="ld_dinner"></span> </th>  <th class="text-center"><span class="flaticon flaticon-sleeping-bed-silhouette"></span><br> <span data-content="ld_sleep"></span></th> </tr></thead>  
+        <tbody id="medsched"></tbody>
+      </table>
+    </div>
+    <ul id="medlist">
+    </ul>
+  </div>
+</div>
+
+
+<!-- Diagnosis panel -->
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title"><a href="#diagcontainer" data-toggle="collapse" style="color:inherit" data-content="ld_diags"></a></h3>
+  </div>
+  <div class="collapse" id="diagcontainer">
+    <table class="table table-hover table-condensed" id="conditions">
+        <thead><tr> <th data-content="ld_name"></th>  <th data-content="ld_code"></th>  <th data-content="ld_1rec"></th> </tr> </thead>  
+        <tbody id="diagdata"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Allergies panel -->
+<div class="panel panel-danger">
+  <div class="panel-heading">
+    <h3 class="panel-title"><a href="#algcontainer" data-toggle="collapse" style="color:inherit" data-content="ld_alg"></a></h3>
+  </div>
+  <div class="collapse" id="algcontainer">
+    <table class="table table-hover" id="allergies">
+    </table>
+  </div>
+</div>
+
+<!-- initializing FHIR, filling template -->
+<script type="text/javascript">
+    var pid = sessionStorage.getItem("pid");
+    //testfhir(pid, langdict);
+</script>
+
+

@@ -1,0 +1,21 @@
+{
+  "name": "unidadinnovacion-patient",
+  "version": "1.0.0",
+  "description": "syspharma patient portal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.com/dppillai/syspharma/syspharma.git"
+  },
+  "keywords": [
+    "ecosystem:phonegap",
+    "ecosystem:cordova",
+    "cordova:template",
+    "phonegap:template"
+  ],
+  "author": "Unidad de Innovacion",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://bitbucket.com/dppillai/syspharma/"
+  },
+  "homepage": "https://syspharma.shealth.eu"
+}

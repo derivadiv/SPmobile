@@ -1,0 +1,21 @@
+body{
+    font-size:1.4em;
+    padding-top: 52px; 
+    position:relative;
+}
+
+table{
+    font-size: 0.95em;
+    padding:1px;
+}
+th {
+    font-size: 1em; 
+    padding:0px;   
+}
+
+span.anchor {
+	display: block;
+	height: 50px; /*same height as header*/
+	margin-top: -50px;
+    visibility: hidden;
+}

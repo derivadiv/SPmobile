@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <!-- External resources: jQuery, Bootstrap 3.3.6, custom Flaticon set -->
+    <script src='./src/jquery-2.1.4.min.js'></script>
+    <script src="./src/jquery.loadTemplate.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./src/bootstrap.min.css" />
+    <script src="./src/bootstrap.min.js"> </script>
+    <link rel="stylesheet" type="text/css" href="/fonts/Flaticon.css"> 
+    <!-- Internal resources, style and js-->
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+    <script src='./js/langdict.js'></script>
+    <title>SysPharma Patient Portal Test</title>
+  </head>
+    <body>
+      <script type="text/javascript" src="cordova.js"></script>
+
+      <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            <img alt="SysPharma" class="img-responsive" style="max-height:100%" src="img/SPlogo.png"> <!-- padding:-15px; -->
+          </a>
+
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sphead" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        </div>
+
+        <div class="collapse navbar-collapse" id="sphead">
+        </div>
+      </div>
+    </nav>
+
+    <div id="maincontent" class="container-fluid">
+    </div>
+  </body>
+
+<script type="text/javascript">
+	function getlangdict(newlang){
+      sessionStorage.setItem("lang",newlang);
+      if (newlang=="english"){
+        sessionStorage.setItem("langdict",english);
+        return english;
+      } else if (newlang == "spanish"){
+        sessionStorage.setItem("langdict",spanish);
+        return spanish;
+      }
+      return {};
+    }
+
+    function changelang(newlang){
+      sessionStorage.setItem("lang",newlang);
+      var ldict = getlangdict(newlang);
+      window.location.reload();
+      return ldict;
+    }
+
+    var lang;
+    var langdict;
+    if (sessionStorage.getItem("lang")){
+      lang = sessionStorage.getItem("lang");
+    }else {
+      lang = "spanish";
+    }
+
+    function loadlogin(langdict){
+      $("#sphead").loadTemplate("./html/header.html",langdict);
+      $("#maincontent").loadTemplate("./html/login.html",langdict);
+    }
+    
+    function loadmain(langdict){
+      $("#sphead").loadTemplate("./html/header.html",langdict);
+      $("#maincontent").loadTemplate("./html/patmain.html",langdict);
+    }
+
+    langdict = getlangdict(lang);
+    if (sessionStorage.getItem("pid")){
+      loadmain(langdict);
+    }
+    else {
+      loadlogin(langdict);
+    }
+
+    function dosubmit(){
+      var pid = $('#patid')[0].value;
+      sessionStorage.setItem("pid", pid);
+      loadmain(langdict);
+    }
+
+    function logout(){
+      sessionStorage.removeItem("pid");
+      loadlogin(langdict); 
+    }
+
+  </script>
+
+
+</html>

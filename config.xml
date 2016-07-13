@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.unidadinnovacion.Patient" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Patient</name>
+    <description>
+        SysPharma patient portal test
+    </description>
+    <author email="dppillai93@gmail.com" href="http://syspharma.shealth.eu">
+        Unidad de Innovacion
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <engine name="ios" spec="~4.1.1" />
+</widget>
