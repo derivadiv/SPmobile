@@ -134,25 +134,35 @@ function mainview(smart, langdict){
       }).then(function(r){
           console.log(r);
           if (r.data.total > 0) {
+            var meddict = {}; // only whenHandedOver seems to be required in resource
             r.data.entry.forEach(function(re) {
-              var outvars;
-              console.log(re);
               var rx = re.resource;
-              var rxcode = "";
-              var rxname = "";
               if (rx.medicationCodeableConcept) {
                 if (rx.medicationCodeableConcept.coding && rx.medicationCodeableConcept.coding[0].code){
                   rxcode = rx.medicationCodeableConcept.coding[0].code.toString();
+                  if (rxcode in meddict){
+                    if (rx.whenHandedOver > meddict[rxcode].whenHandedOver){
+                      meddict[rxcode] = rx;
+                    }
+                  } else {
+                    meddict[rxcode] = rx;
+                  }
                 }
-                if (rx.medicationCodeableConcept.text){
-                  rxname = rx.medicationCodeableConcept.text;
-                }
+              }
+            });
+
+            for (var rxcode in meddict) {
+              var outvars = {};
+              var rx = meddict[rxcode];
+              var rxname = "";
+              if (rx.medicationCodeableConcept.text){
+                rxname = rx.medicationCodeableConcept.text;
               }
               if (rx.dosageInstruction){
                 outvars = dosageInfo(rxcode, rx.dosageInstruction, rxname);
               } else if (rx.authorizingPrescription) {
                 var pres = rx.authorizingPrescription[0].reference;
-                smart.patient.api.search({type: "MedicationOrder", query: {patient: pid, identifier: pres}}).then(function(r2){
+                smart.patient.api.search({type: "MedicationOrder", query: {patient: pid, identifier: pres.split("/")[1]}}).then(function(r2){
                   console.log(r2);
                   if (r2.data.total > 0){
                     r2.data.entry.forEach(function(re) {
@@ -161,19 +171,45 @@ function mainview(smart, langdict){
                         outvars = dosageInfo(rxcode, rx.dosageInstruction, rxname);
                       }                    
                     });
+                  } else if (rx.daysSupply){
+                    outvars["end"] = rx.daysSupply.value.toString() + " days after start";
+                    if (rx.whenHandedOver){
+                      outvars["end"] += " (prescription handed over on " + rx.whenHandedOver + ")";
+                    }
+                    if (rx.quantity && rx.quantity.value){
+                      var num = rx.quantity.value;
+                      var den = rx.daysSupply.value;
+                      outvars["frequency"] = (num/den).toString().substring(0,4);
+                      outvars["period"] = "1";
+                      outvars["periodUnit"] = "d";
+                      if (rx.daysSupply.unit){
+                        outvars["periodUnit"] = rx.daysSupply.unit;
+                      }
+                    }
                   }
                 });
               }
 
-              var medline = "<span class=\"anchor\" id=\""+rxname+"\"></span> <li>"+rxname+" (" + outvars["form"] + ")</li> <ul>";
-              medline += "<li>"+langdict["ld_fre"]+": "+outvars["frequency"]+" / "+outvars["period"]+" "+outvars["periodUnit"] +"</li>";
-              medline += "<li>"+langdict["ld_route"]+": "+outvars["route"]+"</li>";
-              medline += "<li>"+langdict["ld_end"]+": "+outvars["end"]+"</li>";
+              var medline = "<span class=\"anchor\" id=\""+rxname+"\"></span> <li>"+rxname;
+              if (outvars["form"]){
+                medline += " (" + outvars["form"] + ")";
+              }
+              medline += "</li> <ul>";
+              if (outvars["frequency"]){
+                medline += "<li>"+langdict["ld_fre"]+": "+outvars["frequency"]+" / "+outvars["period"]+" "+outvars["periodUnit"] +"</li>";
+              }
+              if (outvars["route"]){
+                medline += "<li>"+langdict["ld_route"]+": "+outvars["route"]+"</li>";
+              }
+              if (outvars["end"]){
+                medline += "<li>"+langdict["ld_end"]+": "+outvars["end"]+"</li>";                
+              }
               medline += "</ul>";
               $("#medlist").append(medline);
-
-              $("#medsched").append(outvars["dosageRow"]);
-            });
+              if (outvars["dosageRow"]){
+                $("#medsched").append(outvars["dosageRow"]);                
+              }
+            }
           } else {
             $("#meds").append("<tr><td>"+langdict["ld_none"]+"</td></tr>");
           }
