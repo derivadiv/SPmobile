@@ -1,0 +1,20 @@
+<!-- View of patient-specific bio/ personal information -->
+<h3><span data-content="ld_prof"></span> </h3>
+
+<h4><span data-content="ld_name"></span>: <span id="patient_name"></span> </h4>
+
+<p>
+	<span data-content="ld_visit"></span>: <span id="visit"></span>
+</p>
+<p>
+	<span data-content="ld_doc"></span>: <span id="doc"></span>
+</p>
+<p>
+	<span data-content="ld_notes"></span>: <span id="notes"></span>
+</p>
+
+<!-- initializing FHIR, filling template -->
+<script type="text/javascript">
+	profile(smart, langdict);
+	//$("#notes").append(outvars["advice"]);
+</script>

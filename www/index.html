@@ -14,12 +14,13 @@
     <link rel="stylesheet" type="text/css" href="./css/index.css" />
     <script type="text/javascript" src='./js/langdict.js'></script>
     <script type="text/javascript" src="./js/mainview.js"></script>
+    <script type="text/javascript" src="./js/profile.js"></script>
     <title>SysPharma Patient Portal Test</title>
   </head>
-    <body>
-      <script type="text/javascript" src="cordova.js"></script>
+  <body>
+    <script type="text/javascript" src="cordova.js"></script>
 
-      <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">
@@ -66,44 +67,65 @@
 
     var lang;
     var langdict;
+    var smart;
+    var pid;
     if (sessionStorage.getItem("lang")){
       lang = sessionStorage.getItem("lang");
     }else {
       lang = "spanish";
     }
 
-    function loadlogin(langdict){
+    function loadlogin(){
       $("#sphead").loadTemplate("./html/header.html",langdict);
       $("#maincontent").loadTemplate("./html/login.html",langdict);
     }
     
-    function loadmain(langdict){
+    function loadmain(){
+      smart = connectfhir(pid);
+      var pq = smart.patient.read();
+      if (pq){
+        pq.done(function(p){
+          $("#sphead").loadTemplate("./html/header.html",langdict);
+          $("#maincontent").loadTemplate("./html/patmain.html",langdict);                          
+        }).fail(function(p){
+          pid = "";
+          sessionStorage.removeItem("pid");
+          var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
+          $("#logalertspace").html(warningHTML);
+        });
+      }
+    }
+
+    function loadprofile(){
       $("#sphead").loadTemplate("./html/header.html",langdict);
-      $("#maincontent").loadTemplate("./html/patmain.html",langdict);
+      $("#maincontent").loadTemplate("./html/profile.html",langdict); 
     }
 
     langdict = getlangdict(lang);
     if (sessionStorage.getItem("pid")){
-      loadmain(langdict);
+      pid = sessionStorage.getItem("pid");
+      loadmain();
     }
     else {
-      loadlogin(langdict);
+      loadlogin();
     }
 
     function dosubmit(){
-      var pid = $('#patid')[0].value;
+      pid = $('#patid')[0].value;
       sessionStorage.setItem("pid", pid);
-      loadmain(langdict);
+      loadmain();
     }
 
     function logout(){
+      pid = null;
+      smart = null;
       sessionStorage.removeItem("pid");
-      loadlogin(langdict); 
+      loadlogin(); 
     }
 
     function connectfhir(pid){
       var demo = {
-        serviceUrl: "https://fhir-open-api-dstu2.smarthealthit.org",//"http://localhost:8080",//
+        serviceUrl: "http://localhost:8080",//"https://fhir-open-api-dstu2.smarthealthit.org",//
         patientId: pid,
         // patientId: "99912345",
         // patientId: "621799",
@@ -111,7 +133,6 @@
           type: 'none'
         }
       };
-
       var smart = FHIR.client(demo);
       return smart;
     }
