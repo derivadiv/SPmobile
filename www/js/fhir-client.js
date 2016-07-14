@@ -78,8 +78,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                withCredentials: args.credentials === 'include',
 	            };
 	            jquery.ajax(opts)
-	                .done(function(data, status, xhr) {console.log("made it to ajax done"); console.log(data); console.log(status); console.log(xhr); ret.resolve({data: data, status: status, headers: xhr.getResponseHeader, config: args});})
-	                .fail(function(err) {console.log("this is where we fail;");console.log(jquery.ajaxSettings);ret.reject({error: err, data: err, config: args});});
+	                .done(function(data, status, xhr) {ret.resolve({data: data, status: status, headers: xhr.getResponseHeader, config: args});})
+	                .fail(function(err) {console.log("this is where we fail;");ret.reject({error: err, data: err, config: args});});
 	            return ret.promise();
 	        }
 	    };
@@ -14917,7 +14917,6 @@ jQuery.extend({
 	// with both ajaxSettings and settings fields.
 	// If target is omitted, writes into ajaxSettings.
 	ajaxSetup: function( target, settings ) {
-		console.log("fancy setup");
 		return settings ?
 
 			// Building a settings object
@@ -15019,10 +15018,8 @@ jQuery.extend({
 
 				// Status-dependent callbacks
 				statusCode: function( map ) {
-					console.log("statusCode mapping?");
 					var code;
 					if ( map ) {
-						console.log(map);
 						if ( state < 2 ) {
 							for ( code in map ) {
 								// Lazy-add the new callback in a way that preserves old ones
@@ -15031,7 +15028,6 @@ jQuery.extend({
 						} else {
 							// Execute the appropriate callbacks
 							jqXHR.always( map[ jqXHR.status ] );
-							console.log(jqXHR);
 						}
 					}
 					return this;
@@ -15236,8 +15232,6 @@ jQuery.extend({
 			// Determine if successful
 			isSuccess = status >= 200 && status < 300 || status === 304;
 
-			console.log("dealing with ajax responses");
-
 			// Get response data
 			if ( responses ) {
 				response = ajaxHandleResponses( s, jqXHR, responses );
@@ -15245,7 +15239,6 @@ jQuery.extend({
 
 			// Convert no matter what (that way responseXXX fields are always set)
 			response = ajaxConvert( s, response, jqXHR, isSuccess );
-			console.log(response);
 
 			// If successful, handle type chaining
 			if ( isSuccess ) {
@@ -15333,7 +15326,6 @@ jQuery.extend({
 });
 
 jQuery.each( [ "get", "post" ], function( i, method ) {
-	console.log("in get post");
 	jQuery[ method ] = function( url, data, callback, type ) {
 		// shift arguments if data argument was omitted
 		if ( jQuery.isFunction( data ) ) {
@@ -15341,7 +15333,6 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 			callback = data;
 			data = undefined;
 		}
-		console.log("url"+url);
 		return jQuery.ajax({
 			url: url,
 			type: method,
@@ -15361,8 +15352,6 @@ jQuery.each( [ "ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSucces
 
 
 jQuery._evalUrl = function( url ) {
-	console.log("_evalUrl");
-	console.log(url);
 	return jQuery.ajax({
 		url: url,
 		type: "GET",
@@ -15599,8 +15588,6 @@ jQuery.ajaxTransport(function( options ) {
 					id = ++xhrId;
 
 				xhr.open( options.type, options.url, options.async, options.username, options.password );
-				console.log("xhr ajax transport opts");
-				console.log(options);
 
 				// Apply custom fields if provided
 				if ( options.xhrFields ) {
@@ -15631,8 +15618,6 @@ jQuery.ajaxTransport(function( options ) {
 				// Callback
 				callback = function( type ) {
 					return function() {
-						console.log("in callback");
-						console.log(jQuery.ajaxSettings);
 
 						if ( callback ) {
 							delete xhrCallbacks[ id ];
@@ -15641,7 +15626,6 @@ jQuery.ajaxTransport(function( options ) {
 							if ( type === "abort" ) {
 								xhr.abort();
 							} else if ( type === "error" ) {
-								console.log("HERE is where the error lies")
 								complete(
 									// file: protocol always yields status 0; see #8605, #14207
 									xhr.status,
@@ -15722,7 +15706,6 @@ jQuery.ajaxPrefilter( "script", function( s ) {
 
 // Bind script tag hack transport
 jQuery.ajaxTransport( "script", function( s ) {
-	console.log("this ajax transport script for cross domain");
 	// This transport only deals with cross domain requests
 	if ( s.crossDomain ) {
 		var script, callback;
@@ -15926,8 +15909,6 @@ jQuery.fn.load = function( url, params, callback ) {
 				responseText );
 
 		}).complete( callback && function( jqXHR, status ) {
-			console.log("something in this callback #");
-			console.log(status);
 			self.each( callback, response || [ jqXHR.responseText, status, jqXHR ] );
 		});
 	}
@@ -16822,7 +16803,6 @@ module.exports = function jwa(algorithm) {
 
                     xhr.addEventListener('load', function(){
                         var response = {}, status, isSuccess;
-                        console.log("xhr status"+xhr.status.toString());
 
                         isSuccess = xhr.status >= 200 && xhr.status < 300 || xhr.status === 304;
 
@@ -17368,7 +17348,6 @@ function FhirClient(p) {
             patient: p.patientId
         });
         client.patient.read = function(){
-        	console.log("in patient read function");
             return client.get({resource: 'Patient'});
         };
     }
@@ -17405,14 +17384,12 @@ function FhirClient(p) {
     };
 
     client.get = function(p) {
-    	console.log("in client get function");
         var ret = Adapter.get().defer();
         var params = {type: p.resource};
         
         if (p.id) {
             params["id"] = p.id;
         }
-        console.log(fhirAPI.read(params));
           
         fhirAPI.read(params)
             .then(function(res){
@@ -17420,9 +17397,6 @@ function FhirClient(p) {
             }, function(){
                 ret.reject("Could not fetch " + p.resource + " " + p.id);
             });
-        console.log("here5");
-        console.log(ret.promise);
-        console.log("after promise");
         return ret.promise;
     };
 
