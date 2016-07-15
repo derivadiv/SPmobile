@@ -211,7 +211,7 @@ function mainview(smart, langdict){
               }
             }
           } else {
-            $("#meds").append("<tr><td>"+langdict["ld_none"]+"</td></tr>");
+            $("#meds").html(langdict["ld_none"]);
           }
       });
 
@@ -227,7 +227,7 @@ function mainview(smart, langdict){
             $("#diagdata").append(row);
           });
         } else {
-          $("#conditions").append("<tr><td>"+langdict["ld_none"]+"</td></tr>");
+          $("#conditions").html(langdict["ld_none"]);
         }
       });
 
@@ -242,7 +242,7 @@ function mainview(smart, langdict){
             $("#allergies").append(row);
           });
         } else {
-          $("#allergies").append("<tr><td>"+langdict["ld_none"]+"</td></tr>");
+          $("#allergies").html(langdict["ld_none"]);
         }
       });
 

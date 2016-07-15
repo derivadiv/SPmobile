@@ -3,18 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <!-- External resources: jQuery, Bootstrap 3.3.6, custom Flaticon set, FHIR client -->
-    <script src='./src/jquery-2.1.4.min.js'></script>
-    <script src="./src/jquery.loadTemplate.min.js"></script>
+    <!-- External resources: jQuery, Bootstrap 3.3.6, custom Flaticon set, FHIR client, JSPDF -->
+    <script src='src/jquery-2.1.4.min.js'></script>
+    <script src="src/jquery.loadTemplate.min.js"></script>
     <link rel="stylesheet" type="text/css" href="src/bootstrap.min.css" />
-    <script src="./src/bootstrap.min.js"> </script>
-    <script type="text/javascript" src='./js/fhir-client.js'></script>
+    <script src="src/bootstrap.min.js"> </script>
+    <script type="text/javascript" src='js/fhir-client.js'></script>
     <link rel="stylesheet" type="text/css" href="css/fonts/flaticon.css"> 
+    <script type="text/javascript" src="src/jspdf/jspdf.min.js"></script>
+    <script type="text/javascript" src="src/jspdf/plugins/from_html.js"></script>
+    <script type="text/javascript" src="src/jspdf/plugins/split_text_to_size.js"></script>
+    <script type="text/javascript" src="src/jspdf/plugins/standard_fonts_metrics.js"></script>
+
     <!-- Internal resources, style and js-->
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <script type="text/javascript" src='./js/langdict.js'></script>
-    <script type="text/javascript" src="./js/mainview.js"></script>
-    <script type="text/javascript" src="./js/profile.js"></script>
+    <script type="text/javascript" src='js/langdict.js'></script>
+    <script type="text/javascript" src="js/mainview.js"></script>
+    <script type="text/javascript" src="js/profile.js"></script>
     <title>SysPharma Patient Portal Test</title>
   </head>
   <body>
@@ -76,11 +81,13 @@
     }
 
     function loadlogin(){
+      $("#sphead").removeClass("in");
       $("#sphead").loadTemplate("./html/header.html",langdict);
       $("#maincontent").loadTemplate("./html/login.html",langdict);
     }
     
     function loadmain(){
+      $("#sphead").removeClass("in");
       smart = connectfhir(pid);
       var pq = smart.patient.read();
       if (pq){
@@ -97,6 +104,7 @@
     }
 
     function loadprofile(){
+      $("#sphead").removeClass("in");
       $("#sphead").loadTemplate("./html/header.html",langdict);
       $("#maincontent").loadTemplate("./html/profile.html",langdict); 
     }

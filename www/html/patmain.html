@@ -45,6 +45,25 @@
 <!-- initializing FHIR, filling template -->
 <script type="text/javascript">
     mainview(smart, langdict);
+
+    function topdf(){
+      console.log("intopdf");
+      var doc = new jsPDF("patientview");
+      var source = $("#medlist").html();
+      doc.fromHTML(
+          source,
+          15,
+          15,
+          {
+            'width': 180
+          });
+      doc.setProperties({
+        title: $("#patient_name").text(),
+        subject: "Patient view",
+        creator: "SPmobile"
+      });
+      doc.output("dataurlnewwindow");
+    }
 </script>
 
 
