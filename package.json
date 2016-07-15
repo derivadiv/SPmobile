@@ -1,10 +1,10 @@
 {
-  "name": "unidadinnovacion-patient",
+  "name": "unidadinnovacion-spmobile",
   "version": "1.0.0",
-  "description": "syspharma patient portal",
+  "description": "syspharma aplicación para el paciente",
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.com/dppillai/syspharma/syspharma.git"
+    "url": "git+https://github.com/dppillai93/patient.git"
   },
   "keywords": [
     "ecosystem:phonegap",
@@ -15,7 +15,7 @@
   "author": "Unidad de Innovacion",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://bitbucket.com/dppillai/syspharma/"
+    "url": "https://github.com/dppillai93/patient/issues"
   },
   "homepage": "https://syspharma.shealth.eu"
 }
