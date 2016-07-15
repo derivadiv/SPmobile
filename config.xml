@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.unidadinnovacion.Patient" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Patient</name>
+<widget id="com.unidadinnovacion.SPmobile" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>SPmobile</name>
     <description>
-        SysPharma patient portal test
+        Aplicación para que el paciente pueda ver sus prescripciones, conectando con SysPharma
     </description>
     <author email="dppillai93@gmail.com" href="http://syspharma.shealth.eu">
         Unidad de Innovacion
