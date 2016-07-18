@@ -88,18 +88,28 @@
     
     function loadmain(){
       $("#sphead").removeClass("in");
-      smart = connectfhir(pid);
-      var pq = smart.patient.read();
-      if (pq){
-        pq.done(function(p){
-          $("#sphead").loadTemplate("./html/header.html",langdict);
-          $("#maincontent").loadTemplate("./html/patmain.html",langdict);                          
-        }).fail(function(p){
-          pid = "";
-          sessionStorage.removeItem("pid");
-          var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
-          $("#logalertspace").html(warningHTML);
-        });
+      var url = $("#server")[0].value;
+      try {
+        smart = connectfhir(pid, url);
+        var pq = smart.patient.read();
+        if (pq){
+          pq.done(function(p){
+            $("#sphead").loadTemplate("./html/header.html",langdict);
+            $("#maincontent").loadTemplate("./html/patmain.html",langdict);                          
+          }).fail(function(p){
+            pid = "";
+            sessionStorage.removeItem("pid");
+            var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
+            $("#logalertspace").html(warningHTML);
+          });
+        } 
+      } catch(e) {
+        pid = "";
+        sessionStorage.removeItem("pid");
+        $("#server")[0].value = "";
+        var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnserve"]+"</div>";
+        $("#logalertspace").html(warningHTML);
+        //begins with http(s) and does NOT include a trailing slash
       }
     }
 
@@ -120,8 +130,13 @@
 
     function dosubmit(){
       pid = $('#patid')[0].value;
-      sessionStorage.setItem("pid", pid);
-      loadmain();
+      if (pid){
+        sessionStorage.setItem("pid", pid);
+        loadmain(); 
+      } else {
+        var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnpid"]+"</div>";
+        $("#logalertspace").html(warningHTML);
+      }
     }
 
     function logout(){
@@ -131,9 +146,12 @@
       loadlogin(); 
     }
 
-    function connectfhir(pid){
+    function connectfhir(pid, url){
+      if (!url){
+        url = "https://fhir-open-api-dstu2.smarthealthit.org";
+      }
       var demo = {
-        serviceUrl: "https://fhir-open-api-dstu2.smarthealthit.org",//"http://localhost:8080",//
+        serviceUrl: url,//"https://fhir-open-api-dstu2.smarthealthit.org",//"http://localhost:8080",//
         patientId: pid,
         // patientId: "99912345",
         // patientId: "621799",
