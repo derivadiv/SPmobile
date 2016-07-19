@@ -79,7 +79,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            };
 	            jquery.ajax(opts)
 	                .done(function(data, status, xhr) {ret.resolve({data: data, status: status, headers: xhr.getResponseHeader, config: args});})
-	                .fail(function(err) {console.log("this is where we fail;");ret.reject({error: err, data: err, config: args});});
+	                .fail(function(err) {ret.reject({error: err, data: err, config: args});});
 	            return ret.promise();
 	        }
 	    };
@@ -14834,6 +14834,9 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 		}
 	}
 
+	if (!isSuccess){
+		return {state: "error", error: "Likely connection failure", data: response};
+	}
 	return { state: "success", data: response };
 }
 
@@ -15175,7 +15178,6 @@ jQuery.extend({
 			done( -1, "No Transport" );
 		} else {
 			jqXHR.readyState = 1;
-
 			// Send global event
 			if ( fireGlobals ) {
 				globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
@@ -15205,7 +15207,9 @@ jQuery.extend({
 		function done( status, nativeStatusText, responses, headers ) {
 			var isSuccess, success, error, response, modified,
 				statusText = nativeStatusText;
-
+			if (status <=0){
+				status=522;
+			}
 			// Called once
 			if ( state === 2 ) {
 				return;
@@ -15225,7 +15229,7 @@ jQuery.extend({
 
 			// Cache response headers
 			responseHeadersString = headers || "";
-
+			
 			// Set readyState
 			jqXHR.readyState = status > 0 ? 4 : 0;
 
@@ -15276,8 +15280,8 @@ jQuery.extend({
 				error = statusText;
 				if ( status || !statusText ) {
 					statusText = "error";
-					if ( status < 0 ) {
-						status = 0;
+					if ( status <= 0 ) {
+						status = 522;
 					}
 				}
 			}
@@ -16783,7 +16787,7 @@ module.exports = function jwa(algorithm) {
                 (window.ArrayBuffer && options.data instanceof ArrayBuffer)))
             ))
         {
-            return {
+        	return {
                 /**
                  * Return a transport capable of sending and/or receiving blobs - in this case, we instantiate
                  * a new XMLHttpRequest and use it to actually perform the request, and funnel the result back
@@ -16803,7 +16807,7 @@ module.exports = function jwa(algorithm) {
 
                     xhr.addEventListener('load', function(){
                         var response = {}, status, isSuccess;
-
+                        
                         isSuccess = xhr.status >= 200 && xhr.status < 300 || xhr.status === 304;
 
                         if (isSuccess) {
