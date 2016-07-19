@@ -11,12 +11,16 @@
     <icon src="www/img/syspharma.png" />
     <access origin="*" />
     <preference name="EnableViewportScale" value="true" />
+    <preference name="orientation" value="default" />
     <engine name="browser" spec="~4.1.0" />
     <engine name="android" spec="~5.1.1" />
     <engine name="ios" spec="~4.1.1" />
     <preference name="StatusBarOverlaysWebView" value="false" /> 
     <preference name="StatusBarBackgroundColor" value="#F8F8F8"/>
     <preference name="StatusBarStyle" value="default" />
+    <preference name="target-device" value="universal" />
+    <preference name="prerendered-icon" value="true" />
+    
     <platform name="ios">
         <!-- iOS 8.0+ -->
         <!-- iPhone 6 Plus  -->
