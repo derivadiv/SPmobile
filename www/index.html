@@ -10,6 +10,7 @@
     <script src="src/bootstrap.min.js"> </script>
     <script type="text/javascript" src='js/fhir-client.js'></script>
     <link rel="stylesheet" type="text/css" href="css/fonts/flaticon.css"> 
+    <link rel="stylesheet" type="text/css" href="css/fonts/ubuntu.css"> 
     <script type="text/javascript" src="src/jspdf/jspdf.min.js"></script>
     <script type="text/javascript" src="src/jspdf/plugins/from_html.js"></script>
     <script type="text/javascript" src="src/jspdf/plugins/split_text_to_size.js"></script>
@@ -20,7 +21,7 @@
     <script type="text/javascript" src='js/langdict.js'></script>
     <script type="text/javascript" src="js/mainview.js"></script>
     <script type="text/javascript" src="js/profile.js"></script>
-    <title>SysPharma Patient Portal Test</title>
+    <title>SPmobile: Syspharma para el paciente</title>
   </head>
   <body>
     <script type="text/javascript" src="cordova.js"></script>
@@ -28,8 +29,8 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            <img alt="SysPharma" class="img-responsive" style="max-height:100%" src="img/SPlogo.png"> <!-- padding:-15px; -->
+          <a class="navbar-brand">
+            <img alt="SysPharma" class="img-responsive" style="padding:-15px; max-height:110%" src="img/SPlogo.png"> <!-- padding:-15px; -->
           </a>
 
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sphead" aria-expanded="false">
@@ -88,29 +89,8 @@
     
     function loadmain(){
       $("#sphead").removeClass("in");
-      var url = $("#server")[0].value;
-      try {
-        smart = connectfhir(pid, url);
-        var pq = smart.patient.read();
-        if (pq){
-          pq.done(function(p){
-            $("#sphead").loadTemplate("./html/header.html",langdict);
-            $("#maincontent").loadTemplate("./html/patmain.html",langdict);                          
-          }).fail(function(p){
-            pid = "";
-            sessionStorage.removeItem("pid");
-            var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
-            $("#logalertspace").html(warningHTML);
-          });
-        } 
-      } catch(e) {
-        pid = "";
-        sessionStorage.removeItem("pid");
-        $("#server")[0].value = "";
-        var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnserve"]+"</div>";
-        $("#logalertspace").html(warningHTML);
-        //begins with http(s) and does NOT include a trailing slash
-      }
+      $("#sphead").loadTemplate("./html/header.html",langdict);
+      $("#maincontent").loadTemplate("./html/patmain.html",langdict); 
     }
 
     function loadprofile(){
@@ -131,8 +111,34 @@
     function dosubmit(){
       pid = $('#patid')[0].value;
       if (pid){
-        sessionStorage.setItem("pid", pid);
-        loadmain(); 
+        var url = $("#server")[0].value;
+        try {
+          smart = connectfhir(pid, url);
+          var pq = smart.patient.read();
+          if (pq){
+            pq.done(function(p){
+              sessionStorage.setItem("pid", pid);
+              loadmain()                   
+            }).fail(function(p, stat, err){
+              console.log(p);
+              console.log(stat);
+              console.log(err);
+              console.log(pq);
+              pid = "";
+              sessionStorage.removeItem("pid");
+              var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
+              $("#logalertspace").html(warningHTML);
+            });
+          } 
+        } catch(e) {
+          console.log(e);
+          pid = "";
+          sessionStorage.removeItem("pid");
+          $("#server")[0].value = "";
+          var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnserve"]+"</div>";
+          $("#logalertspace").html(warningHTML);
+          //begins with http(s) and does NOT include a trailing slash
+        }
       } else {
         var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnpid"]+"</div>";
         $("#logalertspace").html(warningHTML);
