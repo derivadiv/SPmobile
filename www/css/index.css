@@ -1,3 +1,6 @@
+@import 'ubuntu.css';
+@import '../src/fonts/flaticon.css';
+
 body{
     font-size:1.4em;
     padding-top: 52px; 
