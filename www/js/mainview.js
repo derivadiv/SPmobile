@@ -1,4 +1,6 @@
 function mainview(smart, langdict){
+  var today = (new Date()).toISOString().split("T")[0];
+  $("small").append(": "+today);
 
   var drugformmap = {
     "pastilla":"df_pill",
@@ -8,7 +10,7 @@ function mainview(smart, langdict){
     "capsule":"df_cap",
     "cápsula":"df_cap",
     "gotas":"df_eye",
-    "eye drops":"df_eye",
+    "drops":"df_eye",
     "injection":"df_inj",
     "injección":"df_inj",
     "powder":"df_pow",
@@ -40,6 +42,7 @@ function mainview(smart, langdict){
     var lunch = "";
     var dinner = "";
     var sleep = "";
+    var freqhr = "";
     var when = false;
     var sum = 0;
     var outvars = {
@@ -48,9 +51,10 @@ function mainview(smart, langdict){
       "start":"",
       "end":"",
       "form":"",
-      "period":"1",
-      "periodUnit":"d",
-      "frequency":"1"
+      "period":"24",
+      "periodUnit":"h",
+      "frequency":"1",
+      "comments":""
     };
     var img = "";
     dosage.forEach(function(dsi){
@@ -65,20 +69,40 @@ function mainview(smart, langdict){
             img = " "+res[1]+" ";
           }
         }
+        if (dsi.route){
+          outvars["route"] = dsi.route;
+          if (drugformmap[outvars["form"]]=="df_eye"){
+            if (outvars["route"] == "nasal"){
+              img = img + "<i class=\"flaticon-nose\"></i>";
+            } else if (outvars["route"] == "eye" || outvars["route"] == "ojo"){
+              img = "<i class=\"flaticon-eyedropper-1\"></i>";
+            }
+          }
+        }
         if (dsi.timing && dsi.timing.repeat) {
-          // timing-specific properties
+          if (dsi.timing.repeat.period){
+            outvars["period"]=dsi.timing.repeat.period.toString();
+          }
+          if (dsi.timing.repeat.periodUnits){
+            outvars["periodUnit"] = dsi.timing.repeat.periodUnits.toString();
+          }
+          // timing-specific properties: either specific timing in when, or general timing in frequency
           if (dsi.timing.repeat.when){
             when = dsi.timing.repeat.when;
             if (when == "CM"){
-              breakfast = img + q;
+              breakfast = img +"&nbsp;" +q;
             } else if (when == "CD"){
-              lunch = img + q;
+              lunch = img +"&nbsp;" +q;
             } else if (when == "CV"){
-              dinner = img + q;
+              dinner = img +"&nbsp;" +q;
             } else if (when == "HS"){
-              sleep = img + q;
+              sleep = img +"&nbsp;" +q;
             }
             sum += parseInt(q);
+          }
+          else if (dsi.timing.repeat.frequency){
+            outvars["frequency"] = dsi.timing.repeat.frequency.toString();
+            freqhr = img +"&nbsp;" + outvars["frequency"] + "/ " + outvars["period"]+ " " + outvars["periodUnit"];
           }
           // general properties for med
           if (dsi.timing.repeat.boundsPeriod){
@@ -89,33 +113,24 @@ function mainview(smart, langdict){
               outvars["end"] = dsi.timing.repeat.boundsPeriod.end.toString();
             }
           }
-          if (dsi.timing.repeat.period){
-            outvars["period"]=dsi.timing.repeat.period.toString();
-          }
-          if (dsi.timing.repeat.periodUnits){
-            outvars["periodUnit"] = dsi.timing.repeat.periodUnits.toString();
-          }
-          if (dsi.timing.repeat.frequency){
-            outvars["frequency"] = dsi.timing.repeat.frequency.toString();
-          }
         }    
       }
-      if (dsi.route){
-        outvars["route"] = dsi.route;
+      if (dsi.text){
+        freqhr = freqhr + " " + dsi.text;
+        outvars["comments"]=dsi.text;
       }
     });
-    if (when){
-      var dosageRow = "<tr><th> <a href=\"#"+medname+"\">"+medname.split(",")[0]+ "</a></th>";
-      dosageRow = dosageRow + "<td class=\"text-center\">" + breakfast.toString() + "</td>";
-      dosageRow = dosageRow + "<td class=\"text-center\">" + lunch.toString() + "</td>";
-      dosageRow = dosageRow + "<td class=\"text-center\">" + dinner.toString() + "</td>";
-      dosageRow = dosageRow + "<td class=\"text-center\">" + sleep.toString() + "</td>";
-      dosageRow = dosageRow + '</tr>';
-      outvars["dosageRow"] = dosageRow;
-      if (sum>0){
-        outvars["frequency"] = sum.toString();
-      }
+    if (sum>0){
+      outvars["frequency"] = sum.toString();
     }
+    var dosageRow = "<tr><th> <a href=\"#"+medname+"\">"+medname.split(",")[0]+ "</a>"+"</th>";
+    dosageRow = dosageRow + "<td class=\"text-center\" style=\"border-right: 1px solid #D8D8D8;\">" + freqhr.toString() + "</td>";
+    dosageRow = dosageRow + "<td class=\"text-center\">" + breakfast.toString() + "</td>";
+    dosageRow = dosageRow + "<td class=\"text-center\">" + lunch.toString() + "</td>";
+    dosageRow = dosageRow + "<td class=\"text-center\">" + dinner.toString() + "</td>";
+    dosageRow = dosageRow + "<td class=\"text-center\">" + sleep.toString() + "</td>";
+    dosageRow = dosageRow + '</tr>';
+    outvars["dosageRow"] = dosageRow;
     return outvars;
   }
 
@@ -195,6 +210,9 @@ function mainview(smart, langdict){
                 medline += " (" + outvars["form"] + ")";
               }
               medline += "</li> <ul>";
+              if (outvars["comments"]){
+                medline += "<li style=\"color:red;font-weight:bold;\">"+langdict["ld_notes"]+": "+outvars["comments"]+"</li>";
+              }
               if (outvars["frequency"]){
                 medline += "<li>"+langdict["ld_fre"]+": "+outvars["frequency"]+" / "+outvars["period"]+" "+outvars["periodUnit"] +"</li>";
               }
@@ -202,7 +220,12 @@ function mainview(smart, langdict){
                 medline += "<li>"+langdict["ld_route"]+": "+outvars["route"]+"</li>";
               }
               if (outvars["end"]){
-                medline += "<li>"+langdict["ld_end"]+": "+outvars["end"]+"</li>";                
+                if (outvars["end"] < today) {
+                  medline += "<li style=\"color:red;font-weight:bold;\">"+langdict["ld_end"]+": "+outvars["end"]+"</li>";
+                }
+                else {
+                  medline += "<li>"+langdict["ld_end"]+": "+outvars["end"]+"</li>";
+                }
               }
               medline += "</ul>";
               $("#medlist").append(medline);

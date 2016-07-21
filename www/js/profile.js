@@ -44,16 +44,19 @@ function docfilter(x, i, arr){
   return false;
 }
 
-function getdocname(doc){
+function filldocname(doc){
+  var docname;
   if (doc.display){
-    return doc.display;
+    docname= doc.display;
+    $("#doc").append(docname);
   }
   else {
     smart.patient.api.search({type: "Practitioner", query: {identifier: doc.reference.split("/")[1]}
     }).then(function(r){
-      if (r.data.total > 0){
-        doc = r.data.entry[0];
-        return doc.name.family.join(" ");
+      doc = r.data;
+      if (doc.name && doc.name.family){
+        docname = doc.name.family.join(" ")
+        $("#doc").append(docname)
       }
     });
   }
@@ -76,10 +79,8 @@ function profile(smart, langdict){
     }).then(function(r){
       if (r.data.total > 0){
         /* Want most recent visit: get its date */
-        console.log(r.data.entry);  
         re = r.data.entry.sort(cmpenc)[0];
         var rx = re.resource;
-        console.log(rx);
         var date = [];
         if (rx.period){
           if (rx.period.start){
@@ -97,27 +98,29 @@ function profile(smart, langdict){
           var docs = rx.participant.filter(docfilter);
           if (docs.length > 0){
             var doc = docs[0];
-            var docname = getdocname(doc);
-            if (docname){
-              $("#doc").append(docname);
-            }
+            filldocname(doc);
           }
         } else {
             smart.patient.api.search({type: "EpisodeOfCare", query: {patient: pid}
             }).then(function(r){
-              console.log(r);
               if (r.data.total > 0){
                 re = r.data.entry.sort(cmpenc)[0];
                 var rx = re.resource;
-                console.log(rx);
                 if (rx.careManager){
-                  docname = getdocname(rx.careManager);
-                  if (docname){
-                    $("#doc").append(docname);
-                  }
+                  filldocname(rx.careManager);
                 }
               }
             });
+        }
+        /* Notes info */
+        if (rx.indication && rx.indication.length>0){
+          var condid = rx.indication[0].reference.split("/")[1];
+          smart.patient.api.search({type: "Condition", query: {identifier: condid}}).then(function(r){
+            var condrx = r.data;
+            if (condrx.notes){
+              $("#notes").append(condrx.notes);
+            }
+          });
         }
       }
     });
