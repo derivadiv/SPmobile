@@ -1,11 +1,14 @@
-@import 'ubuntu.css';
+@import '../src/ubuntu.css';
 @import '../src/fonts/flaticon.css';
 
 body{
     font-size:1.4em;
     padding-top: 52px; 
     position:relative;
-    font-family: 'Ubuntu', sans-serif;
+}
+
+.container-fluid{
+    font-family: 'Ubuntu', sans-serif!important;
 }
 
 table{
