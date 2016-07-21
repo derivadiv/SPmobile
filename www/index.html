@@ -8,7 +8,8 @@
     <script src='src/jquery-2.1.4.min.js'></script>
     <script src="src/jquery.loadTemplate.min.js"></script>
     <link rel="stylesheet" type="text/css" href="src/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/ubuntu.css" />
+    <link rel="stylesheet" type="text/css" href="src/fonts/flaticon.css"> 
+    <link rel="stylesheet" type="text/css" href="src/ubuntu.css" />
     <script src="src/bootstrap.min.js"> </script>
     <script type="text/javascript" src='js/fhir-client.js'></script>
     <!--
@@ -21,20 +22,21 @@
     <script type="text/javascript" src='js/langdict.js'></script>
     <script type="text/javascript" src="js/mainview.js"></script>
     <script type="text/javascript" src="js/profile.js"></script>
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' 172.20.10.4:* http://localhost:* 127.0.0.1:* filesystem 'unsafe-inline'">-->
     <title>SPmobile: Syspharma para el paciente</title>
   </head>
   <body>
     <script type="text/javascript" src="cordova.js"></script>
-
+    <!-- Navbar header -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand">
-            <img alt="SysPharma" class="img-responsive" style="padding:-15px;max-height:100%" src="img/SPlogo.png"> <!-- padding:-15px; -->
+          <a class="navbar-brand" data-toggle="modal" data-target="#about">
+            <img alt="SPmobile" class="img-responsive" style="padding:-15px;max-height:100%" src="img/SPlogo.png"> <!-- padding:-15px; -->
           </a>
 
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sphead" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
+          <span class="sr-only">Menu</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -47,11 +49,31 @@
       </div>
     </nav>
 
+    <!-- About modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="about">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">About</h4>
+          </div>
+          <div class="modal-body" id="aboutmsg">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Placeholder for page content -->
     <div id="maincontent" class="container-fluid">
     </div>
   </body>
 
 <script type="text/javascript">
+  $("#aboutmsg").loadTemplate("./html/about.html"); 
+
 	function getlangdict(newlang){
       sessionStorage.setItem("lang",newlang);
       if (newlang=="english"){
@@ -88,12 +110,18 @@
     }
     
     function loadmain(){
+      if (!smart){
+        makesmart(sessionStorage.getItem("pid"),sessionStorage.getItem("url"));
+      }
       $("#sphead").removeClass("in");
       $("#sphead").loadTemplate("./html/header.html",langdict);
       $("#maincontent").loadTemplate("./html/patmain.html",langdict); 
     }
 
     function loadprofile(){
+      if (!smart){
+        makesmart(sessionStorage.getItem("pid"),sessionStorage.getItem("url"));
+      }
       $("#sphead").removeClass("in");
       $("#sphead").loadTemplate("./html/header.html",langdict);
       $("#maincontent").loadTemplate("./html/profile.html",langdict); 
@@ -108,16 +136,21 @@
       loadlogin();
     }
 
+    function makesmart(pid, url){
+      smart = connectfhir(pid, url);
+      return smart.patient.read(); 
+    }
+
     function dosubmit(){
       pid = $('#patid')[0].value;
       if (pid){
         var url = $("#server")[0].value;
         try {
-          smart = connectfhir(pid, url);
-          var pq = smart.patient.read();
+          var pq = makesmart(pid, url);
           if (pq){
             pq.done(function(p){
               sessionStorage.setItem("pid", pid);
+              sessionStorage.setItem("url", url);
               loadmain()                   
             }).fail(function(p, stat, err){
               console.log(p);
