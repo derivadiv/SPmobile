@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 12/07/2016 12:38
+    Creation date: 21/07/2016 11:43
     */
 
     @font-face {
@@ -36,44 +36,38 @@
   font-smoothing: antialiased;
     }
 
-    .flaticon-breath:before { content: "\f100"; }
-.flaticon-clock:before { content: "\f101"; }
-.flaticon-clock-1:before { content: "\f102"; }
-.flaticon-dawn:before { content: "\f103"; }
-.flaticon-enema:before { content: "\f104"; }
-.flaticon-eyedropper:before { content: "\f105"; }
-.flaticon-fruit:before { content: "\f106"; }
-.flaticon-inhalator:before { content: "\f107"; }
-.flaticon-lozenge:before { content: "\f108"; }
-.flaticon-menu:before { content: "\f109"; }
-.flaticon-pill:before { content: "\f10a"; }
-.flaticon-pills:before { content: "\f10b"; }
-.flaticon-powder-bottle:before { content: "\f10c"; }
-.flaticon-raindrops:before { content: "\f10d"; }
-.flaticon-restaurant:before { content: "\f10e"; }
-.flaticon-sleeping-bed-silhouette:before { content: "\f10f"; }
-.flaticon-syringe:before { content: "\f110"; }
-.flaticon-syringe-with-medication:before { content: "\f111"; }
-.flaticon-utensil:before { content: "\f112"; }
-.flaticon-vial:before { content: "\f113"; }
+    .flaticon-clock:before { content: "\f100"; }
+.flaticon-clock-1:before { content: "\f101"; }
+.flaticon-dawn:before { content: "\f102"; }
+.flaticon-enema:before { content: "\f103"; }
+.flaticon-eyedropper:before { content: "\f104"; }
+.flaticon-eyedropper-1:before { content: "\f105"; }
+.flaticon-inhalator:before { content: "\f106"; }
+.flaticon-lunch:before { content: "\f107"; }
+.flaticon-medical:before { content: "\f108"; }
+.flaticon-no-fast-food:before { content: "\f109"; }
+.flaticon-nose:before { content: "\f10a"; }
+.flaticon-pill:before { content: "\f10b"; }
+.flaticon-sleeping-bed-silhouette:before { content: "\f10c"; }
+.flaticon-syringe:before { content: "\f10d"; }
+.flaticon-utensil:before { content: "\f10e"; }
+.flaticon-vial:before { content: "\f10f"; }
+.flaticon-weather:before { content: "\f110"; }
     
-    $font-Flaticon-breath: "\f100";
-    $font-Flaticon-clock: "\f101";
-    $font-Flaticon-clock-1: "\f102";
-    $font-Flaticon-dawn: "\f103";
-    $font-Flaticon-enema: "\f104";
-    $font-Flaticon-eyedropper: "\f105";
-    $font-Flaticon-fruit: "\f106";
-    $font-Flaticon-inhalator: "\f107";
-    $font-Flaticon-lozenge: "\f108";
-    $font-Flaticon-menu: "\f109";
-    $font-Flaticon-pill: "\f10a";
-    $font-Flaticon-pills: "\f10b";
-    $font-Flaticon-powder-bottle: "\f10c";
-    $font-Flaticon-raindrops: "\f10d";
-    $font-Flaticon-restaurant: "\f10e";
-    $font-Flaticon-sleeping-bed-silhouette: "\f10f";
-    $font-Flaticon-syringe: "\f110";
-    $font-Flaticon-syringe-with-medication: "\f111";
-    $font-Flaticon-utensil: "\f112";
-    $font-Flaticon-vial: "\f113";
+    $font-Flaticon-clock: "\f100";
+    $font-Flaticon-clock-1: "\f101";
+    $font-Flaticon-dawn: "\f102";
+    $font-Flaticon-enema: "\f103";
+    $font-Flaticon-eyedropper: "\f104";
+    $font-Flaticon-eyedropper-1: "\f105";
+    $font-Flaticon-inhalator: "\f106";
+    $font-Flaticon-lunch: "\f107";
+    $font-Flaticon-medical: "\f108";
+    $font-Flaticon-no-fast-food: "\f109";
+    $font-Flaticon-nose: "\f10a";
+    $font-Flaticon-pill: "\f10b";
+    $font-Flaticon-sleeping-bed-silhouette: "\f10c";
+    $font-Flaticon-syringe: "\f10d";
+    $font-Flaticon-utensil: "\f10e";
+    $font-Flaticon-vial: "\f10f";
+    $font-Flaticon-weather: "\f110";

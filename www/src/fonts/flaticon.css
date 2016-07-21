@@ -1,7 +1,6 @@
 	/*
   	Flaticon icon font: Flaticon
-  	Creation date: 12/07/2016 12:38
-    font-size: inherit;
+  	Creation date: 21/07/2016 11:43
   	*/
 
 @font-face {
@@ -25,27 +24,24 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
   font-family: Flaticon;
-        font-size: 1.7em;
+        font-size: 1.4em;
 font-style: normal;
 }
 
-.flaticon-breath:before { content: "\f100"; }
-.flaticon-clock:before { content: "\f101"; }
-.flaticon-clock-1:before { content: "\f102"; }
-.flaticon-dawn:before { content: "\f103"; }
-.flaticon-enema:before { content: "\f104"; }
-.flaticon-eyedropper:before { content: "\f105"; }
-.flaticon-fruit:before { content: "\f106"; }
-.flaticon-inhalator:before { content: "\f107"; }
-.flaticon-lozenge:before { content: "\f108"; }
-.flaticon-menu:before { content: "\f109"; }
-.flaticon-pill:before { content: "\f10a"; }
-.flaticon-pills:before { content: "\f10b"; }
-.flaticon-powder-bottle:before { content: "\f10c"; }
-.flaticon-raindrops:before { content: "\f10d"; }
-.flaticon-restaurant:before { content: "\f10e"; }
-.flaticon-sleeping-bed-silhouette:before { content: "\f10f"; }
-.flaticon-syringe:before { content: "\f110"; }
-.flaticon-syringe-with-medication:before { content: "\f111"; }
-.flaticon-utensil:before { content: "\f112"; }
-.flaticon-vial:before { content: "\f113"; }
+.flaticon-clock:before { content: "\f100"; }
+.flaticon-clock-1:before { content: "\f101"; }
+.flaticon-dawn:before { content: "\f102"; }
+.flaticon-enema:before { content: "\f103"; }
+.flaticon-eyedropper:before { content: "\f104"; }
+.flaticon-eyedropper-1:before { content: "\f105"; }
+.flaticon-inhalator:before { content: "\f106"; }
+.flaticon-lunch:before { content: "\f107"; }
+.flaticon-medical:before { content: "\f108"; }
+.flaticon-no-fast-food:before { content: "\f109"; }
+.flaticon-nose:before { content: "\f10a"; }
+.flaticon-pill:before { content: "\f10b"; }
+.flaticon-sleeping-bed-silhouette:before { content: "\f10c"; }
+.flaticon-syringe:before { content: "\f10d"; }
+.flaticon-utensil:before { content: "\f10e"; }
+.flaticon-vial:before { content: "\f10f"; }
+.flaticon-weather:before { content: "\f110"; }
