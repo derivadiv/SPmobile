@@ -20,10 +20,10 @@ function mainview(smart, langdict){
   };
   var imageformmap = {
     "df_pill":"<i class=\"flaticon-pill\"></i>",
-    "df_cap":"<i class=\"flaticon-pills\"></i>",
-    "df_eye":"<i class=\"flaticon-eyedropper\"></i>",
+    "df_cap":"<i class=\"flaticon-capsule\"></i>",
+    "df_eye":"<i class=\"flaticon-dropper\"></i>",
     "df_inj":"<i class=\"flaticon-syringe\"></i>",
-    "df_pow":"<i class=\"flaticon-powder-bottle\"></i>",
+    "df_pow":"<i class=\"flaticon-powder\"></i>",
     "df_inh":"<i class=\"flaticon-inhalator\"></i>"
   }; 
 
@@ -75,7 +75,7 @@ function mainview(smart, langdict){
             if (outvars["route"] == "nasal"){
               img = img + "<i class=\"flaticon-nose\"></i>";
             } else if (outvars["route"] == "eye" || outvars["route"] == "ojo"){
-              img = "<i class=\"flaticon-eyedropper-1\"></i>";
+              img = "<i class=\"flaticon-eyedropper\"></i>";
             }
           }
         }
@@ -103,6 +103,7 @@ function mainview(smart, langdict){
           else if (dsi.timing.repeat.frequency){
             outvars["frequency"] = dsi.timing.repeat.frequency.toString();
             freqhr = img +"&nbsp;" + outvars["frequency"] + "/ " + outvars["period"]+ " " + outvars["periodUnit"];
+            console.log(freqhr);
           }
           // general properties for med
           if (dsi.timing.repeat.boundsPeriod){
