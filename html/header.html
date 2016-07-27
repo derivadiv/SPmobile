@@ -29,10 +29,7 @@ $(document).ready(function(){
       $("#b_eng").addClass("active");
     }
   }
-  if (sessionStorage.getItem("pid")){
-    $("#head_pat")[0].style.visibility = "visible";
-  }
-  else {
+  if (page=="login"){
     $("#head_pat")[0].style.visibility = "hidden";
   }
 });

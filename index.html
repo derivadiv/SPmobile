@@ -118,6 +118,7 @@
     $("#sphead").loadTemplate("./html/header.html",langdict);
     $("#maincontent").loadTemplate("./html/login.html",langdict);
     page = "login";
+    $("#head_pat")[0].style.visibility = "hidden";
   }
   
   function loadmain(){
@@ -125,6 +126,7 @@
     $("#sphead").loadTemplate("./html/header.html",langdict);
     $("#maincontent").loadTemplate("./html/patmain.html",langdict); 
     page = "main";
+    $("#head_pat")[0].style.visibility = "visible";
   }
 
   function loadprofile(){
@@ -132,6 +134,7 @@
     $("#sphead").loadTemplate("./html/header.html",langdict);
     $("#maincontent").loadTemplate("./html/profile.html",langdict); 
     page = "profile";
+    $("#head_pat")[0].style.visibility = "visible";
   }
 
   langdict = getlangdict(lang);
