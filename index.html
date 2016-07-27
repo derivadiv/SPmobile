@@ -74,135 +74,129 @@
 <script type="text/javascript">
   $("#aboutmsg").loadTemplate("./html/about.html"); 
 
-	function getlangdict(newlang){
-      sessionStorage.setItem("lang",newlang);
-      if (newlang=="english"){
-        sessionStorage.setItem("langdict",english);
-        return english;
-      } else if (newlang == "spanish"){
-        sessionStorage.setItem("langdict",spanish);
-        return spanish;
-      }
-      return {};
+  function getlangdict(newlang){
+    sessionStorage.setItem("lang",newlang);
+    if (newlang=="english"){
+      sessionStorage.setItem("langdict",english);
+      return english;
+    } else if (newlang == "spanish"){
+      sessionStorage.setItem("langdict",spanish);
+      return spanish;
     }
+    return {};
+  }
 
-    function changelang(newlang){
-      sessionStorage.setItem("lang",newlang);
-      var ldict = getlangdict(newlang);
-      window.location.reload();
-      return ldict;
-    }
+  function changelang(newlang){
+    sessionStorage.setItem("lang",newlang);
+    langdict = getlangdict(newlang);
+    loadpage();
+  }
 
-    var lang;
-    var langdict;
-    var smart;
-    var pid;
-    if (sessionStorage.getItem("lang")){
-      lang = sessionStorage.getItem("lang");
-    }else {
-      lang = "spanish";
-    }
-
-    function loadlogin(){
-      $("#sphead").removeClass("in");
-      $("#sphead").loadTemplate("./html/header.html",langdict);
-      $("#maincontent").loadTemplate("./html/login.html",langdict);
-    }
-    
-    function loadmain(){
-      if (!smart){
-        makesmart(sessionStorage.getItem("pid"),sessionStorage.getItem("url"));
-      }
-      $("#sphead").removeClass("in");
-      $("#sphead").loadTemplate("./html/header.html",langdict);
-      $("#maincontent").loadTemplate("./html/patmain.html",langdict); 
-    }
-
-    function loadprofile(){
-      if (!smart){
-        makesmart(sessionStorage.getItem("pid"),sessionStorage.getItem("url"));
-      }
-      $("#sphead").removeClass("in");
-      $("#sphead").loadTemplate("./html/header.html",langdict);
-      $("#maincontent").loadTemplate("./html/profile.html",langdict); 
-    }
-
-    langdict = getlangdict(lang);
-    if (sessionStorage.getItem("pid")){
-      pid = sessionStorage.getItem("pid");
+  function loadpage(){
+    if (page == "main"){
       loadmain();
-    }
-    else {
+    } else if (page == "profile"){
+      loadprofile();
+    } else {
       loadlogin();
-    }
+    }      
+  }
 
-    function makesmart(pid, url){
-      smart = connectfhir(pid, url);
-      return smart.patient.read(); 
-    }
+  var lang;
+  var langdict;
+  var smart;
+  var pid;
+  var page = "login";
+  if (sessionStorage.getItem("lang")){
+    lang = sessionStorage.getItem("lang");
+  }else {
+    lang = "spanish";
+  }
 
-    function dosubmit(){
-      pid = $('#patid')[0].value;
-      if (pid){
-        var url = $("#server")[0].value;
-        try {
-          var pq = makesmart(pid, url);
-          if (pq){
-            pq.done(function(p){
-              sessionStorage.setItem("pid", pid);
-              sessionStorage.setItem("url", url);
-              loadmain()                   
-            }).fail(function(p, stat, err){
-              console.log(p);
-              console.log(stat);
-              console.log(err);
-              console.log(pq);
-              pid = "";
-              sessionStorage.removeItem("pid");
-              var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
-              $("#logalertspace").html(warningHTML);
-            });
-          } 
-        } catch(e) {
-          console.log(e);
-          pid = "";
-          sessionStorage.removeItem("pid");
-          $("#server")[0].value = "";
-          var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnserve"]+"</div>";
-          $("#logalertspace").html(warningHTML);
-          //begins with http(s) and does NOT include a trailing slash
-        }
-      } else {
-        var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnpid"]+"</div>";
+  function loadlogin(){
+    $("#sphead").removeClass("in");
+    $("#sphead").loadTemplate("./html/header.html",langdict);
+    $("#maincontent").loadTemplate("./html/login.html",langdict);
+    page = "login";
+  }
+  
+  function loadmain(){
+    $("#sphead").removeClass("in");
+    $("#sphead").loadTemplate("./html/header.html",langdict);
+    $("#maincontent").loadTemplate("./html/patmain.html",langdict); 
+    page = "main";
+  }
+
+  function loadprofile(){
+    $("#sphead").removeClass("in");
+    $("#sphead").loadTemplate("./html/header.html",langdict);
+    $("#maincontent").loadTemplate("./html/profile.html",langdict); 
+    page = "profile";
+  }
+
+  langdict = getlangdict(lang);
+  loadpage();
+
+  function makesmart(pid, url, pwd){
+    smart = connectfhir(pid, url, pwd);
+    return smart.patient.read(); 
+  }
+
+  function dosubmit(){
+    pid = $('#patid')[0].value;
+    if (pid){
+      var url = $("#server")[0].value;
+      try {
+        var pq = makesmart(pid, url, $('#pwd')[0].value);
+        if (pq){
+          pq.done(function(p){
+            sessionStorage.setItem("pid", pid);
+            sessionStorage.setItem("url", url);
+            loadmain()                   
+          }).fail(function(p, stat, err){
+            pid = "";
+            sessionStorage.removeItem("pid");
+            var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnlogin"]+"</div>";
+            $("#logalertspace").html(warningHTML);
+          });
+        } 
+      } catch(e) {
+        console.log(e);
+        pid = "";
+        sessionStorage.removeItem("pid");
+        $("#server")[0].value = "";
+        var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnserve"]+"</div>";
         $("#logalertspace").html(warningHTML);
+        //begins with http(s) and does NOT include a trailing slash
       }
+    } else {
+      var warningHTML = "<div class=\"alert alert-danger\" role=\"alert\">"+langdict["ld_warnpid"]+"</div>";
+      $("#logalertspace").html(warningHTML);
     }
+  }
 
-    function logout(){
-      pid = null;
-      smart = null;
-      sessionStorage.removeItem("pid");
-      loadlogin(); 
+  function logout(){
+    pid = null;
+    smart = null;
+    loadlogin(); 
+  }
+
+  function connectfhir(pid, url, pwd){
+    var authparams = {type: "basic", username: pid, password: pwd};
+    if (!url){
+      url = "https://fhir-open-api-dstu2.smarthealthit.org";
+      authparams = {type: "none"};
     }
+    var demo = {
+      serviceUrl: url,//"https://fhir-open-api-dstu2.smarthealthit.org",//"http://localhost:8080",//
+      patientId: pid,
+      auth: authparams
+    };
+    var smart = FHIR.client(demo);
+    return smart;
+  }
 
-    function connectfhir(pid, url){
-      if (!url){
-        url = "https://fhir-open-api-dstu2.smarthealthit.org";
-      }
-      var demo = {
-        serviceUrl: url,//"https://fhir-open-api-dstu2.smarthealthit.org",//"http://localhost:8080",//
-        patientId: pid,
-        // patientId: "99912345",
-        // patientId: "621799",
-        auth: {
-          type: 'none'
-        }
-      };
-      var smart = FHIR.client(demo);
-      return smart;
-    }
-
-  </script>
+</script>
 
 
 </html>
