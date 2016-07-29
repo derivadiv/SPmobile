@@ -8,7 +8,7 @@
         Unidad de Innovacion
     </author>
     <content src="index.html" />
-    <icon src="www/img/syspharma.png" />
+    <icon src="img/syspharma.png" />
     <access origin="*" />
     <preference name="EnableViewportScale" value="true" />
     <preference name="orientation" value="default" />
@@ -23,48 +23,51 @@
     <preference name="prerendered-icon" value="true" />
     <preference name="DisallowOverscroll" value="true" />
 
-    <hook type="after_build" src="hooks/cpconfig.sh" />
     <platform name="ios">
         <!-- iOS 8.0+ -->
         <!-- iPhone 6 Plus  -->
-        <icon src="www/img/ios/Icon-60@3x.png" width="180" height="180" />
+        <icon src="img/ios/Icon-60@3x.png" width="180" height="180" />
         <!-- iOS 7.0+ -->
         <!-- iPhone / iPod Touch  -->
-        <icon src="www/img/ios/Icon-60.png" width="60" height="60" />
-        <icon src="www/img/ios/Icon-60@2x.png" width="120" height="120" />
+        <icon src="img/ios/Icon-60.png" width="60" height="60" />
+        <icon src="img/ios/Icon-60@2x.png" width="120" height="120" />
         <!-- iPad -->
-        <icon src="www/img/ios/Icon-76.png" width="76" height="76" />
-        <icon src="www/img/ios/Icon-76@2x.png" width="152" height="152" />
+        <icon src="img/ios/Icon-76.png" width="76" height="76" />
+        <icon src="img/ios/Icon-76@2x.png" width="152" height="152" />
         <!-- iOS 6.1 -->
         <!-- Spotlight Icon -->
-        <icon src="www/img/ios/Icon-Small-40.png" width="40" height="40" />
-        <icon src="www/img/ios/Icon-Small-40@2x.png" width="80" height="80" />
+        <icon src="img/ios/Icon-Small-40.png" width="40" height="40" />
+        <icon src="img/ios/Icon-Small-40@2x.png" width="80" height="80" />
         <!-- iPhone / iPod Touch -->
-        <icon src="www/img/ios/Icon-Small@2x.png" width="57" height="57" />
-        <icon src="www/img/ios/Icon-Small@3x.png" width="114" height="114" />
+        <icon src="img/ios/Icon-Small@2x.png" width="57" height="57" />
+        <icon src="img/ios/Icon-Small@3x.png" width="114" height="114" />
         <!-- iPhone Spotlight and Settings Icon -->
-        <icon src="www/img/ios/Icon-Small.png" width="29" height="29" />
-        <icon src="www/img/ios/Icon-Small@2x.png" width="58" height="58" />
+        <icon src="img/ios/Icon-Small.png" width="29" height="29" />
+        <icon src="img/ios/Icon-Small@2x.png" width="58" height="58" />
 
         <!-- iPhone and iPod touch -->
-        <splash src="www/img/splash/Default.png" width="320" height="480" />
-        <splash src="www/img/splash/Default@2x.png" width="640" height="960" />
+        <splash src="img/splash/Default.png" width="320" height="480" />
+        <splash src="img/splash/Default@2x.png" width="640" height="960" />
 
         <!-- iPhone 5 / iPod Touch (5th Generation) -->
-        <splash src="www/img/splash/Default-568h@2x.png" width="640" height="1136" />
+        <splash src="img/splash/Default-568h@2x.png" width="640" height="1136" />
 
         <!-- iPhone 6 -->
-        <splash src="www/img/splash/Default-667h@2x.png" width="750" height="1334" />
-        <splash src="www/img/splash/Default-Portrait-736h@3x.png" width="1242" height="2208" />
-        <splash src="www/img/splash/Default-Landscape-736h@3x.png" width="2208" height="1242" />
+        <splash src="img/splash/Default-667h@2x.png" width="750" height="1334" />
+        <splash src="img/splash/Default-Portrait-736h@3x.png" width="1242" height="2208" />
+        <splash src="img/splash/Default-Landscape-736h@3x.png" width="2208" height="1242" />
+
+        <!-- iPhone 6-Plus: 1080x1920 -->
+        <splash src="img/splash/Default-Portrait-1080h.png" width="1080" height="1920" />
+        <splash src="img/splash/Default-1080h.png" width="1920" height="1080" />
 
         <!-- iPad -->
-        <splash src="www/img/splash/Default-Portrait.png"  width="768" height="1024" />
-        <splash src="www/img/splash/Default-Landscape.png"  width="1024" height="768" />
+        <splash src="img/splash/Default-Portrait.png"  width="768" height="1024" />
+        <splash src="img/splash/Default-Landscape.png"  width="1024" height="768" />
 
         <!-- Retina iPad -->
-        <splash src="www/img/splash/Default-Portrait@2x.png" width="1536" height="2048" />
-        <splash src="www/img/splash/Default-Landscape@2x.png" width="2048" height="1536" />
+        <splash src="img/splash/Default-Portrait@2x.png" width="1536" height="2048" />
+        <splash src="img/splash/Default-Landscape@2x.png" width="2048" height="1536" />
         
         <hook type="after_build" src="hooks/fixread.sh" />
     </platform>
@@ -77,11 +80,11 @@
             xxhdpi  : 144x144 px
             xxxhdpi : 192x192 px
         -->
-        <icon src="www/img/android/ldpi.png" density="ldpi" />
-        <icon src="www/img/android/mdpi.png" density="mdpi" />
-        <icon src="www/img/android/hdpi.png" density="hdpi" />
-        <icon src="www/img/android/xhdpi.png" density="xhdpi" />
-        <icon src="www/img/android/xxhdpi.png" density="xxhdpi" />
-        <icon src="www/img/android/xxxhdpi.png" density="xxxhdpi" />
+        <icon src="img/android/ldpi.png" density="ldpi" />
+        <icon src="img/android/mdpi.png" density="mdpi" />
+        <icon src="img/android/hdpi.png" density="hdpi" />
+        <icon src="img/android/xhdpi.png" density="xhdpi" />
+        <icon src="img/android/xxhdpi.png" density="xxhdpi" />
+        <icon src="img/android/xxxhdpi.png" density="xxxhdpi" />
     </platform>
 </widget>
